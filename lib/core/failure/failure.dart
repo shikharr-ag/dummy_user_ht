@@ -19,5 +19,6 @@ class Failure extends Equatable {
 class ServerFailure extends Failure {
   const ServerFailure(
       {prefix = 'Server Failure', message = 'Some Server Error Occured :('})
-      : super(prefix: '', message: '');
+      : super(
+            prefix: 'Server Failure', message: 'Some Server Error Occured :(');
 }

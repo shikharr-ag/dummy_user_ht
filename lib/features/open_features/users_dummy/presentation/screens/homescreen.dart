@@ -3,6 +3,7 @@ import 'package:h_tick_test/features/open_features/users_dummy/presentation/noti
 import 'package:provider/provider.dart';
 
 import '../../data/models/user_dummy_model.dart';
+import '../../domain/entities/user_dummy.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -10,14 +11,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   Widget buildTextfield(String val, String label) {
     return SizedBox(
       height: 100,
@@ -40,23 +33,27 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Consumer<UsersDummyNotifiers>(builder: (context, prov, _) {
-          UserDummyModel? model = prov.model;
+          UserDummy? model = prov.model;
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Text(
                 'Press on the button to get User Data',
               ),
-              if (model == null)
-                Text(
-                  'No User Data :(',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
+              const SizedBox(
+                height: 10,
+              ),
+              if (prov.state == MyState.error) Text(prov.errMsg),
+              if (prov.state == MyState.loading) CircularProgressIndicator(),
+              if (prov.state == MyState.initial) Text('No Data.'),
               if (model != null) ...[
                 buildTextfield(model.name, 'Name'),
                 buildTextfield(model.age.toString(), 'Age'),
                 buildTextfield(model.diseases.toString(), 'Diseases'),
               ],
+              const SizedBox(
+                height: 10,
+              ),
               ElevatedButton.icon(
                   onPressed: () {
                     prov.getUserDummyData();
@@ -66,11 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           );
         }),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

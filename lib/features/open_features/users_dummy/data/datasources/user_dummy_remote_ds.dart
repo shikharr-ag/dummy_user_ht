@@ -20,9 +20,14 @@ class UserDummyRemoteDSImpl implements UserDummyRemoteDS {
   @override
   Future<UserDummyModel> getUserData() async {
     try {
+      ///Manually throw error to create dummy exception
+      // throw ServerException();
+
+      ///Dummy api to get data
       return UserDummyModel.fromJson(
           jsonDecode(await DummyApi().getEncodedJsonStringDataFromApi()));
     } on ServerException catch (_) {
+      print('Error user');
       throw ServerException();
     }
   }

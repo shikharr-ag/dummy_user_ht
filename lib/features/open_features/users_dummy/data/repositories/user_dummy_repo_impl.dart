@@ -16,6 +16,7 @@ class UserDummyRepoImpl implements UserDummyRepo {
       final remoteUser = await userDummyRemoteDs.getUserData();
       return Right(remoteUser);
     } on ServerException catch (_) {
+      print('Failure');
       return const Left(ServerFailure());
     }
   }
